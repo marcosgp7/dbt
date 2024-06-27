@@ -1,17 +1,17 @@
+
 with customers as (
 
-    select * from {{ ref('stg_customers') }}
+select *
+    from {{ ref('stg_jaffle_shop__customers') }}
 
 ),
-
 orders as (
 
-    select * from {{ ref('stg_orders') }}
-
+    select *
+    from {{ ref('stg_jaffle_shop__orders') }}
+    
 ),
-
 customer_orders as (
-
     select
         customer_id,
 
@@ -20,13 +20,10 @@ customer_orders as (
         count(order_id) as number_of_orders
 
     from orders
-
     group by 1
 
 ),
-
 final as (
-
     select
         customers.customer_id,
         customers.first_name,
@@ -37,8 +34,8 @@ final as (
 
     from customers
 
-    left join customer_orders using (customer_id)
-
+    left join customer_orders using(customer_id)
+    
 )
 
 select * from final
