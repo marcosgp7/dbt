@@ -4,11 +4,20 @@ sources:
   - name: jaffle_shop
     database: raw
     schema: jaffle_shop
-    freshness: # make this a little more strict
-          warn_after: {count: 48, period: hour}
-          error_after: {count: 2, period: day}
-    loaded_at_field: _etl_loaded_at
     tables:
       - name: customers
-        freshness: null
+        columns:
+          - name: customer_id
+            tests:
+              - unique
+              - not_null
       - name: orders
+        columns:
+          - name: order_id
+            tests:
+                - unique
+                - not_null
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 48, period: hour} 
